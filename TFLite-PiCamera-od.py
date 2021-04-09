@@ -117,6 +117,8 @@ time.sleep(1)
 
 cnt_enter = 0
 cnt_exit = 0
+total_persons = 0
+total_persons_previous = 0
 
 #for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 while True:
@@ -145,6 +147,8 @@ while True:
 
     # Loop over all detections and draw detection box if confidence is above minimum threshold
     for i in range(len(scores1)):
+        total_persons_previous = total_persons
+        total_persons = 0
         if classes1[i].all() == 0.0:
 
             if ((scores1[i] > MIN_CONF_THRESH) and (scores1[i] <= 1.0)):
@@ -167,9 +171,11 @@ while True:
                     label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
                     cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
                     cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
-                    cnt_exit+=1
-
-    
+                    total_persons+=1   
+                    
+    if total_persons > total_persons_previous
+        cnt_exit+= (total_persons - total_persons_previous)
+        
     frame_rgb2 = frame_rgb[0:720, 680:1280]
     frame_resized2 = cv2.resize(frame_rgb2, (width, height))
     input_data2 = np.expand_dims(frame_resized2, axis=0)
